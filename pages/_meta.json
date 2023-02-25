@@ -1,7 +1,8 @@
 {
   "index": "Introduction",
-  "another": "Another Page",
-  "NextJS": "Next JS",
+  "nextjs": "Next JS",
+  "styling": "Styling",
+  "react": "React",
   "about": {
     "title": "About",
     "type": "page"
