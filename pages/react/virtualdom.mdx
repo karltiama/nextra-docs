@@ -1,0 +1,42 @@
+# Virtual DOM
+## Problem
+
+The problem with DOM Manimulation is that it is slow compared to other 
+JavaScript operations. Most JS frameworks update the DOM alot more
+they have to.
+
+Modern websites can use huge amounts of DOM manipulation and inefficent 
+updating becomes a problem.
+
+To combat this problem React implements something called the virtual DOM.
+
+## The Virtual DOM
+In React, every DOM object has a corresponding virtual DOM, essentially a
+lightweight copy.
+
+Same properties as a real DOM but lacks the ability to directly change what's
+on the screen
+
+Think of manipulation the virtual DOM as editing a blueprint as opposed to
+moving rooms in an actual house.
+
+## How it helps
+
+Rendering a JSX element causes an update to every single virtual DOM object.
+At only the cost of the virtual DOM, which can update quickly. Once the virtual
+DOM has been updated, React compares the virtual DOM with a virtual DOM snapshot.
+Which takes the moment right before the update.
+
+React figures out which  virtual DOM objects have change and updates those objects,
+and only those objects on the real DOM.
+
+This allows the advantage of only update the neccessary parts of the DOM
+
+## In Summary
+
+1. The entire virtual DOM gets updated.
+2. The virtual DOM then gets compared to what it was before it was updated. React figures which objects changed
+3. The changed objects, are changed and only the changed objects change and get updated on the real DOM. 
+4. Changes on the real DOM cause the screen to change.
+
+[Virtual DOM - Deep Dive](https://reactkungfu.com/2015/10/the-difference-between-virtual-dom-and-dom/)

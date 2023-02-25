@@ -1,7 +1,12 @@
 {
   "index": "Introduction",
+<<<<<<< HEAD
   "nextjs": "Next JS",
   "styling": "Styling",
+=======
+  "another": "Another Page",
+  "NextJS": "Next JS",
+>>>>>>> 13aab7d1c7ff56521f402f4cd27f2f4ac2c62b57
   "react": "React",
   "about": {
     "title": "About",
