@@ -1,0 +1,33 @@
+# Reduce 1
+
+## Important Links
+[Clientside problem](https://www.clientside.dev/problem/reduce-easy)
+
+[The coding train - Reduce](https://www.youtube.com/watch?v=-LFjnY1PEDA)
+
+[MDN Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)
+
+```js filename="exWithOutReduce.js" copy
+
+let vals = [1,2,3,4,5];
+let sum = 0;
+// let acc represent sum
+...
+for (let i=0; i < vals.length; i++) {
+    sum += vals[i];
+}
+
+...
+for (let val of vals) {
+    sum += val;
+}
+...
+
+function sum(acc, val) {
+    return acc + val;
+}
+let answer = vals.reduce(sum);
+console.log(sum)
+```
+
+
