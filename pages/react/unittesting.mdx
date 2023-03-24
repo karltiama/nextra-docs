@@ -1,6 +1,7 @@
-# Unit Testing
+# Unit Testing 
 
 ## Introduction
+- 22 Video Course on scrimba
 
 Why Unit Test?
 - Code Confidence
@@ -8,3 +9,61 @@ Why Unit Test?
 - In demand skill
 - Makes life easier
 
+## Intro to Jasmine
+
+Jasmine - Behavior Driven JavaScript
+- Jasmine is a behavior driven dev framework for testing JS code
+
+Other JS Testing Frameworks
+- Jest
+- Mocha & Chai
+- Protractor & Cypress
+
+What makes Jasmine Special?
+- No External Dependencies
+- Front-End/Back-End testing
+- Simple
+
+[Jasmine Docs](https://jasmine.github.io/)
+
+## Setting Up Jasmine from Scratch
+
+- Essentially adding scripts and neccessary html and css files.
+- This course only covers Unit Testing ideology itself, not full on applications.
+- Below is a link that helps set up unit testing with React.
+
+[Unit Testing w/React](https://jasmine.github.io/tutorials/react_with_npm)
+
+## Understanding the 3 Parts of Testing
+
+- Describe block, grouping
+- test
+- expectation and matcher
+
+## Testing Setup Breakdown
+
+- Breaking down high-level overview of what each file is doing
+
+## Grouping with Describe
+
+- Way to group your test
+
+```js filename="main.js" copy
+...
+describe('User', () => {
+    
+});
+...
+```
+
+- More reliable way to identify our grouping name?
+
+```js filename="main.js" copy
+...
+describe(`${User.name} Class`, () => {
+    
+});
+...
+```
+
+## First Test
