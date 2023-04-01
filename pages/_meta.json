@@ -3,6 +3,8 @@
   "nextjs": "Next JS",
   "styling": "Styling",
   "react": "React",
+  "misc": "Misc - To Be Hidden?",
+  "practice": "Practice Problem - TBH?",
   "about": {
     "title": "About",
     "type": "page"

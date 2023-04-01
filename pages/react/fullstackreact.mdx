@@ -187,4 +187,98 @@ Now the component button is being reused and has multiple functions.
 
 Going over the main principles on how the application works once more.
 
-The application starts, App is executed
+How does this work in your own words?
+
+- We have a App component that is rendered
+- In that component we have a useState hook, called counter.
+  - Counter is set with an initial state of 0
+  - In this section it is common practice to use object destructuring
+- We have 3 functions, to inc, dec and set to zero
+- we return a div containing all elements and 
+- a Display component, and 3 Button components
+- The display component takes in a prop counter
+- 3 Button compponents, pass in a handleClick prop, to handle the event and a text.
+  - Each button event causes a re-render and changes state
+
+Adding console logs helps understand how the code flows
+
+```js
+const App = () => {
+  const [counter, setCounter] = useState(0)
+  console.log('rendering with counter value', counter)
+
+  const increaseByOne = () => {
+    console.log('increasing, value before', counter)
+    setCounter(counter + 1)
+  }
+
+  const decreaseByOne = () => { 
+    console.log('decreasing, value before', counter)
+    setCounter(counter - 1)
+  }
+
+  const setToZero = () => {
+    console.log('resetting to zero, value before', counter)
+    setCounter(0)
+  }
+
+  return (
+    <div>
+      <Display counter={counter} />
+      <Button handleClick={increaseByOne} text="plus" />
+      <Button handleClick={setToZero} text="zero" />
+      <Button handleClick={decreaseByOne} text="minus" />
+    </div>
+  )
+} 
+```
+
+### Refactoring the components
+
+After this section, try building this out by yourself, use an existing project or creat a whole new one.
+
+The component displaying the value of the counter is as follows:
+
+```js
+const Display = (props) => {
+  return(
+    <div>{props.counter}</div>
+  )
+}
+```
+
+Since the component only uses the counter field of its props, we can destructure the component and it simplifies as:
+
+```js
+const Display = ({ counter }) => {
+  return (
+    <div>{counter}</div>
+  )
+}
+```
+
+Since the function defining the component contains only the return statement we can further refactor it as such
+
+```js
+const Display = ({ counter }) => <div>{counter}</div>
+```
+
+Simplyfying the button component
+
+```js
+const Button = (props) => {
+  return (
+    <button onClick={props.handleClick}>
+      {props.text}
+    </button>
+  )
+}
+```
+
+Destructuring the button component
+
+```js
+
+```
+
+## A more complex state, debugging React applications
