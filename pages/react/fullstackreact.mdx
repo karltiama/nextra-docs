@@ -282,3 +282,37 @@ Destructuring the button component
 ```
 
 ## A more complex state, debugging React applications
+
+### Complex State
+
+What if our application requires a more complex state?
+In most cases the best way to accomplish this is using the useState function 
+to create separate "pieces" of state.
+
+Here is another example in code, where we have two peices of state for the application
+named left and right, that both get the initial value of 0:
+
+```js
+const App = () => {
+  const [left, setLeft] = useState(0)
+  const [right, setRight] = useState(0)
+
+  return (
+    <div>
+      {left}
+      <button onClick={() => setLeft(left + 1)}>
+        left
+      </button>
+      <button onClick={() => setRight(right + 1)}>
+        right
+      </button>
+      {right}
+    </div>
+  )
+}
+```
+
+First thing I notice is the redunancy, a function that takes input left or right
+and increments by 1.
+
+The components state can be of any type
