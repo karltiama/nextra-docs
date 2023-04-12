@@ -315,4 +315,75 @@ const App = () => {
 First thing I notice is the redunancy, a function that takes input left or right
 and increments by 1.
 
-The components state can be of any type
+The components state can be of any type, we can further simplify things, by saving
+the left and right buttons in to a single object. And the application would look like this.
+
+```js
+const App = () => {
+  const [clicks, setClicks] = useState({
+    left: 0, right: 0
+  })
+
+  const handleLeftClick = () => {
+    const newClicks = { 
+      left: clicks.left + 1, 
+      right: clicks.right 
+    }
+    setClicks(newClicks)
+  }
+
+  const handleRightClick = () => {
+    const newClicks = { 
+      left: clicks.left, 
+      right: clicks.right + 1 
+    }
+    setClicks(newClicks)
+  }
+
+  return (
+    <div>
+      {clicks.left}
+      <button onClick={handleLeftClick}>left</button>
+      <button onClick={handleRightClick}>right</button>
+      {clicks.right}
+    </div>
+  )
+}
+```
+
+We can simplify this even further by using object spread syntax. 
+[Spread syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
+
+```js
+const handleLeftClick = () => {
+  const newClicks = { 
+    ...clicks, 
+    left: clicks.left + 1 
+  }
+  setClicks(newClicks)
+}
+
+const handleRightClick = () => {
+  const newClicks = { 
+    ...clicks, 
+    right: clicks.right + 1 
+  }
+  setClicks(newClicks)
+}
+```
+
+In practice ... clicks creates a new object that has copies of all properties of the clicks object.
+
+```js
+...clicks, right: clicks.right + 1
+```
+
+This creates a copy of the clicks object where the vlaue of right property is increased by one.
+
+Assigning the object above to a variable in the event handler is not necessary and we can simply the functions
+
+```js
+
+```
+
+
