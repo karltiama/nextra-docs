@@ -383,7 +383,71 @@ This creates a copy of the clicks object where the vlaue of right property is in
 Assigning the object above to a variable in the event handler is not necessary and we can simply the functions
 
 ```js
+const handleLeftClick = () =>
+  setClicks({ ...clicks, left: clicks.left + 1 })
 
+const handleRightClick = () =>
+  setClicks({ ...clicks, right: clicks.right + 1 })
 ```
 
+Also it is important to note that we should not import state directly
+Changing state should always be done by setting state to a new object.
+In this case if prop from the previous state are not changed, all is needed
+is to be copied.
 
+### Handling arrays
+
+Adding a piece of state in the application to contain an array allClicks that remembers every
+click that has occured in the application.
+
+```js
+const App = () => {
+  const [left, setLeft] = useState(0)
+  const [right, setRight] = useState(0)
+  const [allClicks, setAll] = useState([])
+
+  const handleLeftClick = () => {
+    setAll(allClicks.concat('L'))
+    setLeft(left + 1)
+  }
+
+  const handleRightClick = () => {
+    setAll(allClicks.concat('R'))
+    setRight(right + 1)
+  }
+
+  return (
+    <div>
+      {left}
+      <button onClick={handleLeftClick}>left</button>
+      <button onClick={handleRightClick}>right</button>
+      {right}
+      <p>{allClicks.join(' ')}</p>
+    </div>
+  )
+}
+```
+
+Every click is stored in a seperate piece of state called allClicks, which is initialized
+as an empty array.
+
+When the left or right button is clicked we add the L or R to the allClicks array.
+It is important to remember that state allClicks must not be mutated directly.
+
+Looking more closely at how the clicking is being render on the page:
+
+```js
+const App = () => {
+  // ...
+
+  return (
+    <div>
+      {left}
+      <button onClick={handleLeftClick}>left</button>
+      <button onClick={handleRightClick}>right</button>
+      {right}
+      <p>{allClicks.join(' ')}</p>
+    </div>
+  )
+}
+```
