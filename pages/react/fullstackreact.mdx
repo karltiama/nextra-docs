@@ -460,3 +460,116 @@ State updates in React asynchronously, not immediately but at some point, before
 Go over example more covered in part 2
 
 ### Deubgging React Applications
+
+A large part of a devs time is spent on debugging/reading existing code.
+
+**Important rules of web development**
+
+Keep the browser dev console open at all times.
+Dont write more code but rather find and fix the problem immediately.
+
+### Rules of Hooks
+
+Hooks may only be called from inside the function body that defines a React component
+
+### Event Handling
+
+In this section we cover how we handle events. Event handlers must always be a function or a reference to a function.
+
+```js
+<button onClick={() => console.log('clicked the button')}>
+  button
+</button>
+```
+
+When the component get rendered, no function gets called and only the reference to the arrow fucntion is set to the
+event handler. The calling of the function only happens once the button is clicked.
+
+Often we will even see event handlers defined in a seperate place like such.
+
+```js
+const App = () => {
+  const [value, setValue] = useState(10)
+
+  const handleClick = () =>
+    console.log('clicked the button')
+
+  return (
+    <div>
+      {value}
+      <button onClick={handleClick}>button</button>
+    </div>
+  )
+}
+```
+
+### A function that returns a function
+
+Lets re-write this ecent handler another way, buy using a *function* that returns a *function*
+
+```js
+const App = () {
+  const [value, setValue] = useState(10)
+
+  const hello = () => {
+    const handler = () => console.log('hello world'
+    return handler
+    )
+  }
+
+  return (
+    <div>
+      {value}
+      <button onClick={hello()}></button>
+    </div>
+  )
+}
+```
+
+Earlier we stated that an event handler may not be a call to a function and that it has to be a function or a 
+reference to a funciton. Why does this work then?
+
+It is because how the function hello is defined!
+
+```js
+const hello = () => {
+  const handler = () => console.log('hello world')
+
+  return handler
+}
+```
+
+The return value of the function is another function.
+
+Why or what is the point of this concept?
+
+From my understanding, it allows us to accept prameters in event handlers. Because defining a function that handles
+another function and quite redundant. This way it allows us to streamline the process in a more efficent way.
+We don't want the component to run the function right when it renders, we want the function to execute only when, we
+want it to.
+
+Changing the code a little bit:
+
+```js
+const App = () => {
+  const [value, setValue] = useState(10)
+
+  const hello = (who) => {
+    const handler = () => {
+      console.log('hello', who)
+    }
+    return handler
+  }
+
+  return (
+    <div>
+      {value}
+      <button onClick={hello('world')}>button</button>
+      <button onClick={hello('react')}>button</button>
+      <button onClick={hello('function')}>button</button>
+    </div>
+  )
+}
+```
+
+Now there are three buttons with the event handlers defined by the hello function that accepts a parameter.
