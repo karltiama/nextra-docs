@@ -573,3 +573,178 @@ const App = () => {
 ```
 
 Now there are three buttons with the event handlers defined by the hello function that accepts a parameter.
+
+The event handler is created by executing the function call hello('world'). The function call
+returns the function:
+
+```js
+() => {
+  console.log('hello','world')
+}
+```
+
+Functions returning functions can be utilized in defining generic functionallity that can be customized
+with parameters. The hello funciton that creates the event handler can be thought as a
+factory that produces customized event handlers meant for greeting users.
+
+Simplyfying our definition a bit:
+
+```js
+const hello = (who) => {
+  const handler = () => {
+    console.log('hello', who)
+  }
+  return handler
+} 
+```
+
+Eliminating the helper variables and directly return the created function:
+
+```js
+const hello = (who) => {
+  return () => {
+    console.log('hello', who)
+  }
+}
+```
+
+The hello function is composed of a single return command, so we can omit the curly brases and use the more
+compact syntax for arrow functions
+
+```js
+const hello = (who) =>
+  () => {
+    console.log('hello', who)
+  }
+```
+
+Lastly we should right all of the arrows on the same line
+
+```js
+const hello = (who) => () => {
+  console.log('hello', who)
+}
+```
+
+Personally I do not think this looks as good, it does not provide great readability.
+
+However we can define the eventhandlers that set the state of the component to a given value like so
+
+```js
+const App = () => {
+  const [value, setValue] = useState(10)
+  
+  const setToValue = (newValue) => () => {
+    console.log('value now', newValue)  // print the new value to console
+    setValue(newValue)
+  }
+  
+  return (
+    <div>
+      {value}
+      <button onClick={setToValue(1000)}>thousand</button>
+      <button onClick={setToValue(0)}>reset</button>
+      <button onClick={setToValue(value + 1)}>increment</button>
+    </div>
+  )
+}
+```
+
+Using functions that return functions is not require to achive this functionality.
+Another way is to return the setToValue function which is responsible for updating state into a normal function:
+
+```js
+const App = () => {
+  const [value, setValue] = useState(10)
+
+  const setToValue = (newValue) => {
+    console.log('value now', newValue)
+    setValue(newValue)
+  }
+
+  return (
+    <div>
+      {value}
+      <button onClick={() => setToValue(1000)}>
+        thousand
+      </button>
+      <button onClick={() => setToValue(0)}>
+        reset
+      </button>
+      <button onClick={() => setToValue(value + 1)}>
+        increment
+      </button>
+    </div>
+  )
+}
+```
+
+This on the other hand provides better readability. The helper function is not convoluted with as many arrow functions
+
+### Passing Event Handlers to Child Componets
+
+Lets extra the button and create it into its own component
+
+```js
+const Button = (props) => (
+  <button onClick={props.handleClick}>
+    {props.text}
+  </button>
+)
+```
+
+The component get the event handler function from the handleClick prop, and the text of the button from the text prop.
+
+Using the new component looks like this
+
+```js
+const App = (props) => {
+  // ...
+  return (
+    <div>
+      {value}
+      <Button handleClick={() => setToValue(1000)} text="thousand" />
+      <Button handleClick={() => setToValue(0)} text="reset" />
+      <Button handleClick={() => setToValue(value + 1)} text="increment" />
+    </div>
+  )
+}
+```
+
+### Do Not Define Components Within Components
+
+Adding display component
+
+```js
+// This is the right place to define a component
+const Button = (props) => (
+  <button onClick={props.handleClick}>
+    {props.text}
+  </button>
+)
+
+const App = () => {
+  const [value, setValue] = useState(10)
+
+  const setToValue = newValue => {
+    console.log('value now', newValue)
+    setValue(newValue)
+  }
+
+  // Do not define components inside another component
+  const Display = props => <div>{props.value}</div>
+
+  return (
+    <div>
+      <Display value={value} />
+      <Button handleClick={() => setToValue(1000)} text="thousand" />
+      <Button handleClick={() => setToValue(0)} text="reset" />
+      <Button handleClick={() => setToValue(value + 1)} text="increment" />
+    </div>
+  )
+}
+```
+
+This does work, but don't implement components like this! Never define components inside other components.
+This method provides no benefits and leads to mayn unpleasant problems. React treats a component defined inside of another component as a new component in every render.
+Which makes it impossible for React to optimize the component.
