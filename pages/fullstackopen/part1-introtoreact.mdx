@@ -1,5 +1,18 @@
 # Full Stack React Notes
 
+## Intro to React
+### Exercise 1.1-1.2
+
+Some personal notes from these exercises
+
+Breaking down each section
+Starting with the App component, we have a course object, and looking at the return statement, lets find out
+the overall strucuture of the App. Returning a Header, Content and Total Parts components.
+Each one taking in a prop.
+
+Header component displays object course name, half statck app dev.
+
+Part component takes in props, and returns a name and the exercise.
 
 
 I want to retake this course for a week or so, in order to learn better
@@ -747,4 +760,43 @@ const App = () => {
 
 This does work, but don't implement components like this! Never define components inside other components.
 This method provides no benefits and leads to mayn unpleasant problems. React treats a component defined inside of another component as a new component in every render.
-Which makes it impossible for React to optimize the component.
+Which makes it impossible for React to optimize the component. Instead move the Display component function to its correct place, outside of the App component function.
+Now this can be in a seperate file completely if the app is to complex, but in this case this will work just fine.
+
+```js
+const Display = props => <div>{props.value}</div>
+
+const Button = (props) => (
+  <button onClick={props.handleClick}>
+    {props.text}
+  </button>
+)
+
+const App = () => {
+  const [value, setValue] = useState(10)
+
+  const setToValue = newValue => {
+    console.log('value now', newValue)
+    setValue(newValue)
+  }
+
+  return (
+    <div>
+      <Display value={value} />
+      <Button handleClick={() => setToValue(1000)} text="thousand" />
+      <Button handleClick={() => setToValue(0)} text="reset" />
+      <Button handleClick={() => setToValue(value + 1)} text="increment" />
+    </div>
+  )
+}
+```
+
+### Web Programmers Oath
+
+Programming is hard, that is why I will use all the possible means to make it easier
+- I will have the browser dev console open at all time
+- I progerss with small steps
+- I will write lots of console.log statements to make sure I understand how the code behaves and to help pinpoint problems
+- If my code does not work, I will not write more code. instead I start deleting the code untill it works or just returns to a state
+where everything was still working
+

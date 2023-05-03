@@ -3,7 +3,6 @@
     "props":"Props",
     "state":"State",
     "unittesting":"Unit Testing",
-    "virtualdom":"Virtual DOM",
-    "fullstackreact": "Full Stack React"
+    "virtualdom":"Virtual DOM"
 
 }
