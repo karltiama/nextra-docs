@@ -1,5 +1,5 @@
-## Communicating With Server
-# Rendering a collection, modules
+# Communicating With Server
+## Rendering a collection, modules
 
 I've done this multiple times, but say we have a array or an object. And we want to display it or something. The course talks over
 how to parse thru that using map and how the key attribute should not be array indexes, because it will cuase errors in the long run.
@@ -166,6 +166,7 @@ const App = ({ notes }) => {
 ```
 
 Here we are using destructuring again and we are and now we have a seperate display of a single note in its own component.
+A whole React application can be written in a single file. Although it is not very practical.
 
 Common practice is to declare each component in its own file as an ES6-modules.
 
@@ -173,5 +174,35 @@ In smaller applications, components are used placed in a director called compone
 
 Then we proceed towards creating the Note component in its own component.
 
-Exisiting Code on can be found on Github
+Exisiting Code on can be found on Github.
+
+We will create a directory called components for our application and place a file named Note.js inside, its contents is as follows
+
+```js
+const Note = ({ note }) => {
+  return (
+    <li>{note.content}</li>
+  )
+}
+
+export default Note
+```
+
+The last line of the module exports the declared module, the variable Note.
+
+Now the file that is using the component - App.js - can import the module:
+
+```js
+import Note from './components/Note'
+
+const App = ({ notes }) => {
+  // ...
+}
+```
+
+The component exported by the module is now available for use in the variable Note, just as it was earlier.
+
+When importing our own components, their location must be given in relation to the importing file
+
+### Exercise 2.1 - 2.5
 
