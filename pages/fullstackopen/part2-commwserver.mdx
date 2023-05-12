@@ -1,4 +1,5 @@
 # Communicating With Server
+
 ## Rendering a collection, modules
 
 I've done this multiple times, but say we have a array or an object. And we want to display it or something. The course talks over
@@ -120,11 +121,11 @@ And returning a li element with the note.id and note.content for each one.
 
 
 
-## Map
+### Map
 
 This Generates an error as well in the console, do to the next topic.
 
-## Anti-pattern: Array Indexes as Keys
+### Anti-pattern: Array Indexes as Keys
 
 ```js
 <ul>
@@ -142,7 +143,7 @@ Interesting side note that I read in the article linked, stated that the correct
 stable ID inside your list item. So it does have errors durring the render period in react.
 [Medium](https://robinpokorny.medium.com/index-as-a-key-is-an-anti-pattern-e0349aece318)
 
-## Refactoring Modules
+### Refactoring Modules
 
 ```js
 const Note = ({ note }) => {
@@ -206,3 +207,236 @@ When importing our own components, their location must be given in relation to t
 
 ### Exercise 2.1 - 2.5
 
+Finishing the code from exercises 1.1 - 1.5
+
+The component structure of the application should be like such
+
+```
+App
+  Course
+    Header
+    Content
+      Part
+      Part
+```
+
+Starting of with the App.js:
+
+```js
+import Course from "./components/Course";
+
+const App = () => {
+  const courses = [
+    {
+      name: "Half Stack application development",
+      id: 1,
+      parts: [
+        {
+          name: "Fundamentals of React",
+          exercises: 10,
+          id: 1,
+        },
+        {
+          name: "Using props to pass data",
+          exercises: 7,
+          id: 2,
+        },
+        {
+          name: "State of a component",
+          exercises: 14,
+          id: 3,
+        },
+        {
+          name: "Redux",
+          exercises: 11,
+          id: 4,
+        },
+      ],
+    },
+    {
+      name: "Node.js",
+      id: 2,
+      parts: [
+        {
+          name: "Routing",
+          exercises: 3,
+          id: 1,
+        },
+        {
+          name: "Middlewares",
+          exercises: 7,
+          id: 2,
+        },
+      ],
+    },
+  ];
+
+  return (
+    <div>
+      <h1>Web development curriculum</h1>
+      {courses.map((course) => (
+        <Course key={course.id} course={course} />
+      ))}
+    </div>
+  );
+};
+
+export default App;
+```
+
+Right now this courses array is acting like a json request that we will fetch from a server.
+
+And the return statment returns an h1 and a Course component for every course that exists.
+This allows the program to always work no matter how many courses we add or remove.
+
+Each Course is passed in with a key, which is a course id and course
+
+Now created in a separate component folder we have a Course.js:
+
+```js
+const Course = ({ course }) => {
+    return (
+      <div>
+        <Header name={course.name} />
+        <Content parts={course.parts} />
+        <Total parts={course.parts} />
+      </div>
+    );
+  };
+  
+  const Header = ({ name }) => {
+    return <h2>{name}</h2>;
+  };
+  
+  const Content = ({ parts }) => {
+    return (
+      <div>
+        {parts.map((part) => (
+          <Part key={part.id} name={part.name} exercises={part.exercises} />
+        ))}
+      </div>
+    );
+  };
+  
+  const Part = ({ name, exercises }) => {
+    return (
+      <p>
+        {name} {exercises}
+      </p>
+    );
+  };
+  
+  const Total = ({ parts }) => {
+    const total = parts.reduce((sum, part) => {
+      return sum + part.exercises;
+    }, 0);
+  
+    return <strong>total of {total} exercises</strong>;
+  };
+  
+  export default Course;
+```
+
+Remember Each course has a total of 3 sections, Header, Content and Total
+
+Starting with the Course component itself, we take in a course object as props
+and we return a div containing a Header, Content and Total components.
+
+Content takes in the course.parts object and maps thru each part of an individual course, and creates a Parts component.
+Which contains a key, a name and the number of exercises.
+
+The part component just takes in the name and number of exercises as props and returns the name and number of exercises wrapped in a p tag
+
+Next the Total component takes in parts as a prop, and then calculates the total number of exercises for each course using the
+array function reduce.
+
+## Forms
+
+Expanding the application in the previous sections
+Then we add an HTML form to the component that will be used to add new notes.
+The prevent default function, is there to prevent a reload.
+
+[HTMLFormElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit_event)
+
+How do we access the data contained in the forms input element? Thats where controlled components come in.
+
+### Controlled components
+
+[React docs- Controlling input with a state variable](https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable)
+
+Creating a peice of state called newNote, creates errors for us and the function doesn't work as expected. And we get an
+error saying we provided a value prop to a form field without an onChange handler. Thus causing the value to be only a read-only field
+
+Since we assigned a piece of the App commponents state as the value attribute of the input element, the App component
+now controls the behavior of the input element.
+
+To enable editing of the input element, we have to register an event handler that sychronizes the changes made to the input
+within the components state. This can be done with a handleNoteChange function
+
+```js
+const App = (props) => {
+  const [notes, setNotes] = useState(props.notes)
+  const [newNote, setNewNote] = useState(
+    'a new note...'
+  ) 
+
+  // ...
+
+  const handleNoteChange = (event) => {
+    console.log(event.target.value)
+    setNewNote(event.target.value)
+  }
+
+  return (
+    <div>
+      <h1>Notes</h1>
+      <ul>
+        {notes.map(note => 
+          <Note key={note.id} note={note} />
+        )}
+      </ul>
+      <form onSubmit={addNote}>
+        <input
+          value={newNote}
+          onChange={handleNoteChange}
+        />
+        <button type="submit">save</button>
+      </form>   
+    </div>
+  )
+}
+```
+
+If we run the program we see that the input we are typing is getting put out due to the console log we have. And we we
+check the React Dev tools we also see we have a new state and it tracking every letter we input.
+
+Now the App components newNote state reflects the current value of the input, we can complete the addNote function for created enw notes
+
+```js
+const addNote = (event) => {
+  event.preventDefault()
+  const noteObject = {
+    content: newNote,
+    important: Math.random() < 0.5,
+    id: notes.length + 1,
+  }
+
+  setNotes(notes.concat(noteObject))
+  setNewNote('')
+}
+```
+
+First, we create a new object for the note called noteObject that will recieve its content from the components newNote state.
+The unique identifier id is generated based on the total number of notes. This works because our notes are never deleted.
+
+The new note is added to the list of notes using the [concat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat) array method.
+
+This method does not mutate the original notes array, but rather creates a new copy of the array with the new item
+added to the end. This is very important since we must never mutate state directly in React!
+
+### Filtering Displayed Elements
+
+Adding new functionality to our application that allows us to only view the important notes. Lets add a piece of state to the
+App compponent that keeps track of which notes should be displayed
+
+Then lets change the component so that it stores a list of all the notes to be displayed in the notesToShow variable. The items on the list depend on the state of the component itself
