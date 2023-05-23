@@ -440,3 +440,52 @@ Adding new functionality to our application that allows us to only view the impo
 App compponent that keeps track of which notes should be displayed
 
 Then lets change the component so that it stores a list of all the notes to be displayed in the notesToShow variable. The items on the list depend on the state of the component itself
+
+```js
+...
+  const notesToShow = showAll
+    ? notes
+    : notes.filter(note => note.important === true)
+
+  return (
+    <div>
+      <h1>Notes</h1>
+      <ul>
+        {notesToShow.map(note =>
+          <Note key={note.id} note={note} />
+        )}
+      </ul>
+      // ...
+    </div>
+  )
+```
+
+Explaining the notesToshow variable:
+
+```js
+  const notesToShow = showAll
+    ? notes
+    : notes.filter(note => note.important === true)
+
+```
+
+This is rather compact and essentially what we are doing here is creating a variable notesToShow to filter weather or
+not to display only notes that are tagged important or not.
+
+The definition used the conditional operator, the basic syntax of the operator functions as follows:
+
+```js
+const result = condition ? val1 : val2
+```
+
+the result variable will be set to the value of val1 if condition is true. If the condition is false, the result
+variable will be set to the value of val2.
+
+If the value showAll is false, the notesToShow variable will be assigned to a list that only contains the important
+property set to true. The filtering is done with the help of the array filter method:
+
+```js
+notes.filter(note => note.important === true)
+```
+
+Next the functionality 
