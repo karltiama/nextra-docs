@@ -488,4 +488,33 @@ property set to true. The filtering is done with the help of the array filter me
 notes.filter(note => note.important === true)
 ```
 
-Next the functionality 
+Next the functionality
+
+-- To be finished... forms section --
+
+## Getting data from server
+
+This section will be client-side (broswer) functionality. We will go in to a direction in which we familiarize ourselves
+with how the code executing in the broswer communicates with the backend.
+
+In this section we will be using a JSON server to act as our server.
+
+https://github.com/typicode/json-server
+
+Above is the github about JSON Server.
+"Get a full fake REST API with zero coding in less than 30 seconds"
+
+Instructions to install JSON server locally
+
+Going forward the main principle is that we will save notes to the server, or technically saving them to the json-server.
+React code fetches notes from server and renders them to screen. When a new note is added, it persist in "memory"
+
+json-server stores all the data in the db.json file, which resides on server. In the real world it would be store in some
+database.
+
+We will get more familiar with the princiles of implimenting server-side functionality in more detail in part 3
+
+### The broswer as a runtime enviorment
+
+Goes over using the outdated way of fetching data that was used in part 0 using XMLHttRequest
+
