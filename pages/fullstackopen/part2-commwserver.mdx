@@ -516,5 +516,60 @@ We will get more familiar with the princiles of implimenting server-side functio
 
 ### The broswer as a runtime enviorment
 
-Goes over using the outdated way of fetching data that was used in part 0 using XMLHttRequest
+Goes over using the outdated way of fetching data that was used in part 0 using XMLHttRequest.
+
+## npm
+
+In this course we will be using the axios library for communication between the browser and server.
+
+Most JS projects are defined using the node package manager, aka npm. Dependencies are just the external libraries the
+project has.
+
+Axios can be installed via the command line
+
+```
+npm install axios
+```
+
+We get an error when trying to start the server. It happens due to the fact that
+the server cannot bind to port 3001 because it is already occupied by a previously started json-server.
+
+```
+npm install axios
+npm install json-server --save-dev
+```
+
+There is a difference in the parameters. Axios is installed as a runtime dependency of the aplication, because the execution of the program
+requires the existence of the library.
+
+On the other hand, json-server was installed as a development dependency using save dev, since the program itself does not require it. It is used
+for assistance durring software development.
+
+## Axios and promises
+
+Going forward json-server is assumed to be running in port 3001
+
+Adding the following code in index.js:
+
+```
+import axios from 'axios'
+
+const promise = axios.get('http://localhost:3001/notes')
+console.log(promise)
+
+const promise2 = axios.get('http://localhost:3001/foobar')
+console.log(promise2)
+```
+
+From my understanding we are importing a library axios, and creating 2 promises.
+
+The result should be printed in the console.
+
+Axios method get returns a promise.
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
+
+A promise is an object representing the eventual completion or failure of a asynchronous operation.
+A promise can have 3 distinct states.
+
 
