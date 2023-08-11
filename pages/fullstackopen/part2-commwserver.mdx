@@ -597,6 +597,12 @@ requires the existence of the library.
 On the other hand, json-server was installed as a development dependency using save dev, since the program itself does not require it. It is used
 for assistance durring software development.
 
+Command to start server now
+
+```js
+npm run server
+```
+
 ## Axios and promises
 
 Going forward json-server is assumed to be running in port 3001
@@ -624,4 +630,11 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
 A promise is an object representing the eventual completion or failure of a asynchronous operation.
 A promise can have 3 distinct states.
 
+1. The promise is pending: Means the final value (one of the folowing two) is not available yet
+
+2. The promise is fulfilled: Means that the operation has been completed and the final value is available
+which generally is a successful operation. This state is also called resolved
+
+3. The promise is rejected: Means that an error prevented the final value from being determined
+which generally represents a failed operation
 
