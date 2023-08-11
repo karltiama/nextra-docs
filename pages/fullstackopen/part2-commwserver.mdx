@@ -503,7 +503,46 @@ Note: the way to start server is "npm start"
 - Figure out where the comparison of the two object needs to take place
 
 Ended up creating a variable that uses the .some() method
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
 
+2.8 Problem - Expand your application by allowing users to add phone numbers to the phone book. You will need to add a second input element to the form (along with its own event handler):
+
+2.9 Problem - Implement a search field that can be used to filter the list of people by name:
+- Creating a search query, requires state, event handler, and a function to filter the array
+
+```js
+  const filteredPersons = persons.filter((person) =>
+    person.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+```
+
+2.10 Problem - If you have implemented your application in a single component, refactor it by extracting suitable parts into new components. Maintain the application's state and all event handlers in the App root component.
+
+```js
+const App = () => {
+  // ...
+
+  return (
+    <div>
+      <h2>Phonebook</h2>
+
+      <Filter ... />
+
+      <h3>Add a new</h3>
+
+      <PersonForm 
+        ...
+      />
+
+      <h3>Numbers</h3>
+
+      <Persons ... />
+    </div>
+  )
+}
+```
+
+So we need 3 seperate components: 'Filter', 'PersonForm' and 'PersonList'.
 
 ## Getting data from server
 
