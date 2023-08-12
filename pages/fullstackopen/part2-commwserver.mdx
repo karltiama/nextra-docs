@@ -638,3 +638,16 @@ which generally is a successful operation. This state is also called resolved
 3. The promise is rejected: Means that an error prevented the final value from being determined
 which generally represents a failed operation
 
+```js
+axios
+  .get('http://localhost:3001/notes')
+  .then(response => {
+    const notes = response.data
+    console.log(notes)
+  })
+```
+
+
+
+To access the result of the operation represented by the promise, we must register an event handler to the promise.
+Do this using a then method. The then method 
