@@ -638,6 +638,13 @@ which generally is a successful operation. This state is also called resolved
 3. The promise is rejected: Means that an error prevented the final value from being determined
 which generally represents a failed operation
 
+To access the result of the operation represented by the promise, we must register an event handler to the promise.
+Do this using a then method.
+
+The JavaScript runtime enviornment calls the callback function registered by the then method providing it with a response
+object as a parameter. The response object contains all the essential data related to the response of an HTTP GET request.
+Which includes the returned data, status code and headers.
+
 ```js
 axios
   .get('http://localhost:3001/notes')
@@ -647,7 +654,25 @@ axios
   })
 ```
 
+## Effect-Hooks
 
+With the Effect Hook inserted in the code, the following is printed to the console:
 
-To access the result of the operation represented by the promise, we must register an event handler to the promise.
-Do this using a then method. The then method 
+```
+render 0 notes
+effect
+promise fulfilled
+render 3 notes
+```
+
+website initially rendered, effect is after rendering, axios.get initiates the fetching of data from the server,
+as well as registers the following function as an event handler for the operation:
+
+```
+response => {
+  console.log('promise fulfilled')
+  setNotes(response.data)
+}
+```
+
+When the data arrives from the server, the JavaScript runtime calls the function registered as the event handler
