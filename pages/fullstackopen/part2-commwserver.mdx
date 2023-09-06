@@ -834,6 +834,53 @@ After we create a new object that is an exact copy of the old note, apart from t
 const changedNote = { ...note, important: !note.important }
 ```
 
+In practice, { ...note } creates a new object with copies of all the properties from the note object. When we add properties inside the curly braces after the spread object
+e.g. { ...note, important: true }, then the value of the important property of the new object will be true. In our example
+the important property gets the negation of its previous value in the original object.
 
+https://fullstackopen.com/en/part2/altering_data_in_server#changing-the-importance-of-notes
+Better explained here
 
+```js
+axios.put(url, changedNote).then(response => {
+  setNotes(notes.map(note => note.id !== id ? note : response.data))
+})
+```
+
+More importantly make sure we understand what map is doing here for us
+
+```js
+notes.map(note => note.id !== id ? note : response.data)
+```
+
+## Extracting Communication with the Backend into a Separate Module
+
+Cleaning up the App component. In practice we should always follow single responsibility principle.
+
+```js
+import axios from 'axios'
+const baseUrl = 'http://localhost:3001/notes'
+
+const getAll = () => {
+  return axios.get(baseUrl)
+}
+
+const create = newObject => {
+  return axios.post(baseUrl, newObject)
+}
+
+const update = (id, newObject) => {
+  return axios.put(`${baseUrl}/${id}`, newObject)
+}
+
+export default { 
+  getAll: getAll, 
+  create: create, 
+  update: update 
+}
+```
+
+The module returns and object that has three functions (getAll, create, and update) as its properties that deals with notes
+
+## Cleaner Syntax for Defining Object Literals
 
