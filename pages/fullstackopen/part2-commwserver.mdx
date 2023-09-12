@@ -745,6 +745,51 @@ The Phonebook Step6
 
 We continue with developing the phonebook. Store the initial state of the application in the file db.json, which should be placed in the root of the project.
 
+```js
+{
+  "persons":[
+    { 
+      "name": "Arto Hellas", 
+      "number": "040-123456",
+      "id": 1
+    },
+    { 
+      "name": "Ada Lovelace", 
+      "number": "39-44-5323523",
+      "id": 2
+    },
+    { 
+      "name": "Dan Abramov", 
+      "number": "12-43-234345",
+      "id": 3
+    },
+    { 
+      "name": "Mary Poppendieck", 
+      "number": "39-23-6423122",
+      "id": 4
+    }
+  ]
+}
+```
+
+http://localhost:3001/persons
+
+is the website, persons is regarding to the name of the object itself.
+
+Reminder in a real world scenario data would be stored in some sort of database.
+We will get in to server-side functionality in more detail in the next part
+
+Installing axios
+
+```
+npm install axios
+```
+
+Installing json-server
+```
+npm install json-server --save-dev
+```
+
 ## Part D - Altering data in server
 
 In this section we will look at some conventions used by json-server and REST APIs in general.
