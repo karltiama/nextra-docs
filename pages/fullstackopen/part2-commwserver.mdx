@@ -790,6 +790,9 @@ Installing json-server
 npm install json-server --save-dev
 ```
 
+Using Effect-hooks
+
+
 ## Part D - Altering data in server
 
 In this section we will look at some conventions used by json-server and REST APIs in general.
@@ -923,6 +926,14 @@ When I ask for help in the course Discord or Telegram channel or elsewhere I for
 
 ### Exercises 2.12-2.15
 
-### 2.12
-
+2.12
 Currently, the numbers that are added to the phonebook are not saved to a backend server. Fix this situation.
+
+2.13
+Extract the code that handles the communication with the backend into its own module by following the example shown earlier in this part of the course material.
+
+2.14
+Make it possible for users to delete entries from the phonebook. The deletion can be done through a dedicated button for each person in the phonebook list.
+You can confirm the action from the user by using the window.confirm method
+
+Since each individual person needs a button to delete it is best to go in to PersonList component
