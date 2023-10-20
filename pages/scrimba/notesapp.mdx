@@ -1,0 +1,378 @@
+## Practice Practice Practice
+
+### Warm up - Scrimba - Dark / Light Mode
+
+```
+
+Challenge: Add a dark/light mode to the React Facts site
+Imagine you've been handed this code base which includes
+all the design elements for a light and dark mode already,
+but the team needs you to add the functionality to it so
+it can switch from light to dark mode when the toggle is
+flipped.
+
+Advice:
+1. Spend a good amount of time looking through the existing
+code base to make sure you understand how everything is
+working
+    a. Check the markup starting in index.js -> App.js
+    -> Main.js and Navbar.js
+    b. Follow the CSS classNames to the style.css file
+    and make sure you understand how the styles should
+    be applied
+    c. Look closely at the conditional classNames in
+    the JSX to help you decide what kind of props
+    the components need to receive
+
+2. Think carefully about which components need state.
+This will help you decide where to write the code
+initializing state and how to pass that state to
+the components that need access to it.
+    a. Also think about how state will need to change,
+    and see if you can find the hint in the code as
+    to how/where that should happen.
+
+```
+
+- Read Code Daily
+
+## Notes App: Intro
+
+App.js File
+
+```js
+import React from "react"
+import Sidebar from "./components/Sidebar"
+import Editor from "./components/Editor"
+import { data } from "./data"
+import Split from "react-split"
+import {nanoid} from "nanoid"
+
+/**
+ * Challenge: Spend 10-20+ minutes reading through the code
+ * and trying to understand how it's currently working. Spend
+ * as much time as you need to feel confident that you 
+ * understand the existing code (although you don't need
+ * to fully understand everything to move on)
+ * 
+ * 10/19/2023
+ */
+
+export default function App() {
+    const [notes, setNotes] = React.useState([])
+    const [currentNoteId, setCurrentNoteId] = React.useState(
+        (notes[0] && notes[0].id) || ""
+    )
+    
+    function createNewNote() {
+        const newNote = {
+            id: nanoid(),
+            body: "# Type your markdown note's title here"
+        }
+        setNotes(prevNotes => [newNote, ...prevNotes])
+        setCurrentNoteId(newNote.id)
+    }
+    
+    function updateNote(text) {
+        setNotes(oldNotes => oldNotes.map(oldNote => {
+            return oldNote.id === currentNoteId
+                ? { ...oldNote, body: text }
+                : oldNote
+        }))
+    }
+    
+    function findCurrentNote() {
+        return notes.find(note => {
+            return note.id === currentNoteId
+        }) || notes[0]
+    }
+    
+    return (
+        <main>
+        {
+            notes.length > 0 
+            ?
+            <Split 
+                sizes={[30, 70]} 
+                direction="horizontal" 
+                className="split"
+            >
+                <Sidebar
+                    notes={notes}
+                    currentNote={findCurrentNote()}
+                    setCurrentNoteId={setCurrentNoteId}
+                    newNote={createNewNote}
+                />
+                {
+                    currentNoteId && 
+                    notes.length > 0 &&
+                    <Editor 
+                        currentNote={findCurrentNote()} 
+                        updateNote={updateNote} 
+                    />
+                }
+            </Split>
+            :
+            <div className="no-notes">
+                <h1>You have no notes</h1>
+                <button 
+                    className="first-note" 
+                    onClick={createNewNote}
+                >
+                    Create one now
+                </button>
+            </div>
+            
+        }
+        </main>
+    )
+}
+
+```
+
+##Deeper Dive
+
+```js
+    const [notes, setNotes] = React.useState([])
+    const [currentNoteId, setCurrentNoteId] = React.useState(
+        (notes[0] && notes[0].id) || ""
+    )
+```
+
+Setting an empty array for the notes state
+setting the first array and the first arrays id or sets it to empty as the initial state for currentNoteId
+
+```js
+function createNewNote() {
+        const newNote = {
+            id: nanoid(),
+            body: "# Type your markdown note's title here"
+        }
+        setNotes(prevNotes => [newNote, ...prevNotes])
+        setCurrentNoteId(newNote.id)
+    }
+```
+
+this function createNewNote creates a newNote object with properties id and body
+id is created by nanoid() and i believe nanoid just is safe way to create url-friendly ids 
+and then we call setNotes and pass in a call back function of the previous note and passes in the array newNote, and the rest of the prevNotes
+then we set the current note id to the new note id
+
+```js
+    function updateNote(text) {
+        setNotes(oldNotes => oldNotes.map(oldNote => {
+            return oldNote.id === currentNoteId
+                ? { ...oldNote, body: text }
+                : oldNote
+        }))
+    }
+```
+
+this function updates the note and passes in a variable of the text
+set notes is called and a call back function is called passing the old notes thru and another chain of call functions to map and find the note that has the same id as the current note id
+and if that is true then you pass thru all the old notes and also and the body of the text that we pass.
+
+### ChatGPT Response
+Your explanation of the updateNote function is quite good and captures the essence of what the function does. However, if you want to make it even clearer or more precise, you can consider the following improvements:
+
+1. Clarify purpose. Start by stating the main purpose of the function.
+The updateNote function is reponsible for updating the content of the currently selected note
+
+2. Use more concise language.
+Instead of passes in a variable of the text, say accepts a 'text' parameter which represents the updated note content
+
+3. Highlight the conditional logic. Emphasize the importance of the conditional logic by explicitly saying that it checks wheather the 'id' of each note matches the currentNoteId to determine what note to update
+
+Here's a revised explanation incorporating these suggestions:
+
+"The updateNote function serves the purpose of modifying the content of the currently selected note. It takes a text parameter, which represents the updated content for the note. Inside the function, it utilizes the setNotes method with a callback function that operates on the previous state of the notes array (oldNotes).
+
+Within this callback function, a map operation is performed on the oldNotes array. For each oldNote, the function checks whether its id matches the currentNoteId, which identifies the currently selected note for editing. If there's a match, a new object is created by copying the oldNote, but with the body property updated to the new text. This ensures that only the content of the currently selected note is modified, while all other notes remain unchanged.
+
+```js
+    function findCurrentNote() {
+        return notes.find(note => {
+            return note.id === currentNoteId
+        }) || notes[0]
+    }
+```
+
+The findCurrentNote functions serves the purpose of finding the current note to allow the side bar for additional styling.
+We return the current note of the first note by taking all the notes and using the find function that matches the note id to the currentNoteId or the first note
+
+```js
+    return (
+        <main>
+        {
+            notes.length > 0 
+            ?
+            <Split 
+                sizes={[30, 70]} 
+                direction="horizontal" 
+                className="split"
+            >
+                <Sidebar
+                    notes={notes}
+                    currentNote={findCurrentNote()}
+                    setCurrentNoteId={setCurrentNoteId}
+                    newNote={createNewNote}
+                />
+                {
+                    currentNoteId && 
+                    notes.length > 0 &&
+                    <Editor 
+                        currentNote={findCurrentNote()} 
+                        updateNote={updateNote} 
+                    />
+                }
+            </Split>
+            :
+            <div className="no-notes">
+                <h1>You have no notes</h1>
+                <button 
+                    className="first-note" 
+                    onClick={createNewNote}
+                >
+                    Create one now
+                </button>
+            </div>
+            
+        }
+        </main>
+    )
+
+```
+
+This is our main page in which if there no notes, it prompts with a header and a button to create one. If there are notes we use a split component and pass in 3 props, sizes to split the page based on im assuming %, direction, and a className of split
+Inside of that component we encapsulate it with a sidebar component with the props notes, currentNote and setCurrentNoteId and newNote.
+Then a ternary the check if the current note id exist and the notes.length is greater than zero. If that all checks out it displays the Editor on the other 70% with props current note and update note
+
+Going thru each component
+
+Editor.js
+
+```js
+import React from "react"
+import ReactMde from "react-mde"
+import Showdown from "showdown"
+
+export default function Editor({ currentNote, updateNote }) {
+    const [selectedTab, setSelectedTab] = React.useState("write")
+
+    const converter = new Showdown.Converter({
+        tables: true,
+        simplifiedAutoLink: true,
+        strikethrough: true,
+        tasklists: true,
+    })  
+
+    return (
+        <section className="pane editor">
+            <ReactMde
+                value={currentNote.body}
+                onChange={updateNote}
+                selectedTab={selectedTab}
+                onTabChange={setSelectedTab}
+                generateMarkdownPreview={(markdown) =>
+                    Promise.resolve(converter.makeHtml(markdown))
+                }
+                minEditorHeight={80}
+                heightUnits="vh"
+            />
+        </section>
+    )
+}
+
+```
+
+This editor component receives the props curentNote and updatenote.
+we set state selected tab to have a initial state of "write"
+create a converter object which looks like what properties we want our editor to have.
+
+then we reurn a section which looks like a container with classname "pane editor"
+and inside that we hvae a ReactMde component which passes a bunch of props, the value, onchange prop, and others
+
+Sidebar.js
+
+```js
+import React from "react"
+
+export default function Sidebar(props) {
+    const noteElements = props.notes.map((note, index) => (
+        <div key={note.id}>
+            <div
+                
+                className={`title ${
+                    note.id === props.currentNote.id ? "selected-note" : ""
+                }`}
+                onClick={() => props.setCurrentNoteId(note.id)}
+            >
+                <h4 className="text-snippet">Note {index + 1}</h4>
+            </div>
+        </div>
+    ))
+    
+    /*
+    
+        Implements dynamic styling with the side bar, when a individual note is selected,
+    
+    */
+    
+
+    return (
+        <section className="pane sidebar">
+            <div className="sidebar--header">
+                <h3>Notes</h3>
+                <button className="new-note" onClick={props.newNote}>+</button>
+            </div>
+            {noteElements}
+        </section>
+    )
+}
+
+```
+
+This is the sidebar component, first we set notesElement equal to a list or array of notes that exist using map. Each note element is maped over using the map function and the index of that note.
+Inside a div container, we have another div to keep track of the current note. Which has a dynamic class "selected-note" that is applied if the note.id matches the current note.id that was passed, and then an h4 of which note it is.
+
+
+## Notes App: Features to Add
+
+- Sync notes with localStorage
+- Add note summary titles
+- Move modified notes to the top of the list
+- Delete notes
+
+## Notes App: Sync notes with localStorage
+
+- Using Local Storage
+
+[mdn web docs - local storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+
+- Main functions we will be using
+
+```js
+localStorage.getItem("key")
+localStorage.setItem("key", value)
+
+/*
+
+Note: Value must be a string, so if you have a more complex
+value like an array or object to save, you'll need to use:
+
+*/
+
+JSON.stringify(value)
+JSON.parse(stringifiedValue)
+
+```
+
+### Challenge
+
+Every time the `notes` array changes, save it 
+in localStorage. You'll need to use JSON.stringify()
+to turn the array into a string to save in localStorage.
+When the app first loads, initialize the notes state
+with the notes saved in localStorage. You'll need to
+use JSON.parse() to turn the stringified array back
+into a real JS array.
