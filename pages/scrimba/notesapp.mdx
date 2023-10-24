@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components'
+
 ## Practice Practice Practice
 
 ### Warm up - Scrimba - Dark / Light Mode
@@ -130,7 +132,7 @@ export default function App() {
 
 ```
 
-##Deeper Dive
+### Deeper Dive
 
 ```js
     const [notes, setNotes] = React.useState([])
@@ -366,13 +368,124 @@ JSON.stringify(value)
 JSON.parse(stringifiedValue)
 
 ```
+## Local Storage - ChatGPT
+
+- Background on localStorage
+
+Certainly! localStorage is a web storage feature provided by web browsers that allows you to store key-value pairs of data persistently on a user's computer. Here's a brief explanation of localStorage:
+
+Persistent Storage: localStorage provides a way to store data on a user's device that persists across browser sessions and even when the browser is closed and reopened. This means the data remains available until explicitly removed by the user or your application.
+
+Key-Value Pairs: Data in localStorage is stored as key-value pairs, where each key is a unique identifier for the stored data, and the value is the data you want to store. Both keys and values are typically strings.
+
+Storage Limit: localStorage has a storage limit of around 5-10 megabytes per domain, depending on the browser. This limit is typically much larger than the size of cookies, making it suitable for storing more substantial amounts of data.
+
+Data Type Limitation: While localStorage stores data as strings, you can store other data types (e.g., numbers, booleans) by converting them to strings before storage and parsing them when retrieved.
+
+Same-Origin Policy: localStorage follows the same-origin policy, meaning that data stored in localStorage is only accessible by web pages from the same origin (i.e., the same protocol, domain, and port). This provides a level of security and isolation.
+
+Simple API: localStorage provides a simple API for setting, getting, and removing data. Common methods include setItem(key, value), getItem(key), and removeItem(key).
+
+No Expiration: Data stored in localStorage does not have an expiration date. It remains in storage until explicitly removed.
+
+Use Cases: localStorage is often used for storing user preferences, session data, tokens for authentication, and caching data to improve application performance.
+
+Caution: While localStorage is useful for certain scenarios, it's important to be cautious about what data you store, especially sensitive or personally identifiable information. Always consider security best practices and user privacy.
+
+localStorage is a valuable tool for web developers when they need to store and manage data on the client-side, particularly when that data should persist between visits to a website or across browser sessions.
+
 
 ### Challenge
 
 Every time the `notes` array changes, save it 
 in localStorage. You'll need to use JSON.stringify()
 to turn the array into a string to save in localStorage.
+
+```js
+    useEffect(() => {
+        localStorage.setItem("notes", JSON.stringify(notes));
+    }, [notes]);
+```
+
+
 When the app first loads, initialize the notes state
 with the notes saved in localStorage. You'll need to
 use JSON.parse() to turn the stringified array back
 into a real JS array.
+
+```js
+    const [notes, setNotes] = React.useState(
+        JSON.parse(localStorage.getItem("notes")) || [])
+        
+```
+
+## Lazy State Initialization
+
+What is Lazy State Initialization?
+
+A technique used to ensure that a component's state initialization is only preformed once
+even if the component re-renders. 
+
+1. Normal State Initialization
+
+```js
+const [count, setCount] = useState(initialValue)
+```
+
+In this case, initialValue is evaluated during each render, which can be inefficient if the value of initialValue is expensive
+to compute or if you want to ensure it only runs once.
+
+2. Lazy State Initialization with a Callback 
+
+```js
+const [count, setCount] = useState(() => {
+  // Calculate the initial state value here
+  return initialValue;
+});
+```
+
+By wrapping the state initialization in a function, React ensures that the function is called only during the initial render, preventing it from being invoked during subsequent renders.
+
+This lazy state initialization technique is especially useful when the initial state value depends on some complex or asynchronous computation, or when you want to avoid unnecessary computations during re-renders.
+
+Here's a summary of the benefits:
+
+- Improved performance: Prevents unnecessary recalculations of the initial state value.
+- Ensures consistent behavior: Guarantees that the state initialization code runs only once, even if the component re-renders.
+- Supports complex initialization logic: Allows you to perform complex or asynchronous operations when setting up the initial state.
+- In general, it's a good practice to use the lazy state initialization approach when working with useState to ensure efficient and predictable behavior in your React components.
+
+### Challenge
+
+Lazily initialize our notes state so it doesnt reach into localStorage on every single re-render of the App component
+
+```js
+    const [notes, setNotes] = React.useState(
+        () => JSON.parse(localStorage.getItem("notes")) || []
+    )
+```
+
+## Notes App: Note Summary title
+
+### Challenge
+
+Try to figure out a way to display only the first line of note.body as the note summary in the side bar.
+
+Hint 1: note.body has "invisible" newline characters in the text every tiem there's a new line shown.
+Ex: the text in Note 1 is: "# Note summary\n\nBeginning of the note"
+
+Hint 2: see if you can split the string into an array using the "\n" newline character as the divider
+
+
+```js
+<h4 className="text-snippet">{note.body.split('\n')[0]}</h4>
+```
+
+note.body: This represents the text content of the body property of a note object. This text may contain one or more lines separated by newline characters (\n).
+
+.split('\n'): This is a JavaScript string method called split. It is used to split a string into an array of substrings based on a specified delimiter. In this case, the delimiter is the newline character (\n). So, the split method breaks the text into an array of strings, where each element of the array is a line from the original text.
+
+[0]: After splitting the text, [0] is used to access the first element of the resulting array. In JavaScript, array indices start at 0, so [0] refers to the first item in the array.
+
+So, when you put it all together, note.body.split('\n')[0] takes the note.body text, splits it into an array of lines, and then extracts the first line from that array. This is how you get the first line of text from the note.body property.
+
