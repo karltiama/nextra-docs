@@ -489,3 +489,79 @@ note.body: This represents the text content of the body property of a note objec
 
 So, when you put it all together, note.body.split('\n')[0] takes the note.body text, splits it into an array of lines, and then extracts the first line from that array. This is how you get the first line of text from the note.body property.
 
+## Notes App: Bump Recent note to the top
+
+### Challenge
+
+When the user edits a note, reposition it in the list of notes to the top of the list
+
+So when the user edits a note, that means that it currently is clicked and selected
+a process which happens on the on click event, I think I need a separate function that keeps track of the order?
+
+noteElements currently just maps them as they come in, I need to find out how to make the current note
+appear active up top
+
+```js
+function updateNote(text) {
+        setNotes(oldNotes => {
+        // Create a new empty array
+        // Loop over the original array
+            // if the id matches
+                // put the updated note at the 
+                // beginning of the new array
+            // else
+                // push the old note to the end
+                // of the new array
+        // return the new array
+    })
+}
+```
+
+```js
+function updateNote(text) {
+  setNotes((oldNotes) => {
+    return oldNotes.map((oldNote) => {
+      if (oldNote.id === currentNoteId) {
+        // Update the body of the matching note
+        return { ...oldNote, body: text };
+      }
+      return oldNote;
+    });
+  });
+}
+```
+
+```js
+    function updateNote(text) {
+    // Find the index of the edited note
+    const editedNoteIndex = notes.findIndex((note) => note.id === currentNoteId);
+
+    if (editedNoteIndex !== -1) {
+        // Create a copy of the edited note with the updated text
+        const updatedNote = { ...notes[editedNoteIndex], body: text };
+
+        // Remove the edited note from its current position
+        const updatedNotes = [...notes];
+        updatedNotes.splice(editedNoteIndex, 1);
+
+        // Prepend the edited note to the beginning of the array
+        updatedNotes.unshift(updatedNote);
+
+        // Update the state to reflect the new order
+        setNotes(updatedNotes);
+        }
+    }
+```
+
+## Notes App: Delete Note
+
+### Challenge
+
+Complete and implement the deleteNote function
+
+Hints:
+
+- What array method can be used to return a new array that has been filtered out an item based on a conditional
+- Notice the parameters being based to the function and think about how both of those parameters can be passed in durring the onClick event handler
+
+the filter function allows us to do this.
