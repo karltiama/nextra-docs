@@ -1,0 +1,50 @@
+# Nov 21
+
+# Anime Website
+- Use a UI library?
+Daisy UI?
+Tailwind UI
+HeadlessUI
+
+# Theodorus Blog Disection
+
+- On his home page, post in a grid
+
+```
+            <ul
+              className='mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3'
+              data-fade='5'
+            >
+              {currentPosts.length > 0 ? (
+                currentPosts.map((post) => (
+                  <BlogCard
+                    key={post.slug}
+                    post={post}
+                    checkTagged={checkTagged}
+                  />
+                ))
+              ) : (
+                <ContentPlaceholder />
+              )}
+            </ul>
+```
+
+- post are 1 column on mobile(636), 3 on largest, max width, and 2 till 1280
+- blog card consist of 
+-- picture
+-- tag (not as necessary)
+- time to read and view count ("nan")
+- date published
+- subject
+
+# Problems (todo)
+
+# Josh Comeau
+## Interactive guide to CSS grid
+
+- caniuse, great tool to check browser support
+
+## Understanding layout Algorithms
+- Flow layout default layout Algorithm used for non-table html.
+
+
