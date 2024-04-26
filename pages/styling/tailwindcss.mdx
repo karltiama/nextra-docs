@@ -1,11 +1,20 @@
 # Tailwind CSS
 
 ## Why use Tailwind?
+
 It provides reusable styling and components that I can use between multiple websites.
-Combining CSS best practices with Tailwind helps supress all the 
+Combining CSS best practices with Tailwind helps supress all the
 
-## Tailwind Play
+## Tailwind Patterns I follow
 
-```html
-<div class="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12"></div>
-```
+### 'space-y-\*' utility class
+
+Gives us a convient way to uniformly add vertical spacing between the direct child elements of a container.
+
+- Purpose: designed to add vertical spacing between children of container.
+- How: when used it will apply a 'margin-top' to all children elements except the first.
+
+Comparing it 'space-y-\*' with Margin and Padding
+
+- Specificity
+- Uniformity vs Control
