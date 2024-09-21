@@ -7,6 +7,9 @@ Combining CSS best practices with Tailwind helps supress all the
 
 ## Tailwind Patterns I follow
 
+### Mobile First Design Approach
+
+
 ### 'space-y-\*' utility class
 
 Gives us a convient way to uniformly add vertical spacing between the direct child elements of a container.
@@ -18,3 +21,11 @@ Comparing it 'space-y-\*' with Margin and Padding
 
 - Specificity
 - Uniformity vs Control
+
+CSS Equivalent
+
+```css
+.container > * + * {
+	margin-top: 1rem; /* Adjust the spacing as needed */
+}
+```
